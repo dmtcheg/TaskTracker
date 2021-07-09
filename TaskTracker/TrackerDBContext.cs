@@ -1,3 +1,4 @@
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using TaskTracker.Models;
 
@@ -7,7 +8,7 @@ namespace TaskTracker
     {
         public TrackerDbContext(DbContextOptions<TrackerDbContext> options):base(options)
         {
-            Database.EnsureCreated();
+            //Database.EnsureCreated();
         }
         
         public DbSet<Project> Projects { get; set; }
@@ -15,9 +16,11 @@ namespace TaskTracker
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            // todo: add connection string.
-            // also check apppseetings json
-            optionsBuilder.UseSqlite("~/Tracker.db");
+            var connectionStringBuilder = new SqliteConnectionStringBuilder { DataSource = "MyDb.db" };
+            var connectionString = connectionStringBuilder.ToString();
+            var connection = new SqliteConnection(connectionString);
+
+            optionsBuilder.UseSqlite(connection);
         }
     }
 }

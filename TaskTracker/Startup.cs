@@ -20,6 +20,8 @@ namespace TaskTracker
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            
+            // todo: configuration builder and db.ensurecreated
         }
 
         public IConfiguration Configuration { get; }
