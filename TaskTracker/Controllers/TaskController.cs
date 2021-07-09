@@ -17,11 +17,12 @@ namespace TaskTracker.Controllers
             _dbContext = db as TrackerDbContext;
         }
 
-        [HttpGet]
-        public ActionResult<List<Task>> ViewAll()
-        {
-            return _dbContext.Tasks.ToList();
-        }
+        // [HttpGet]
+        // public ActionResult<List<Task>> ViewAll()
+        // {
+        //     return _dbContext.Tasks
+        //         .AsNoTracking().ToList();
+        // }
         
         [HttpGet]
         public ActionResult<List<Task>> ViewByProject(int projId)

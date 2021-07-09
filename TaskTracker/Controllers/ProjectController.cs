@@ -32,7 +32,8 @@ namespace TaskTracker.Controllers
         [HttpGet]
         public ActionResult<List<Project>> ViewAll()
         {
-            return _dbContext.Projects.ToList();
+            return _dbContext.Projects
+                .AsNoTracking().ToList();
         }
 
         [HttpPost]
@@ -67,16 +68,30 @@ namespace TaskTracker.Controllers
             return NoContent();
         }
 
-        public ActionResult<Project> RemoveTask(Project proj, Task task)
+        [HttpDelete("{taskId}")]
+        public ActionResult<Project> RemoveTask(int taskId, Project proj)
         {
-            proj.RemoveTask(task);
+            var task = proj.Tasks.FirstOrDefault(t=> t.Id == taskId);
+            if (task is null)
+                return NotFound();
+            _dbContext.Tasks.Remove(task);
+            _dbContext.SaveChanges();
             return proj;
         }
 
-        public ActionResult<List<Task>> AllSubtask(Project proj)
+        [HttpPost("{taskId}")]
+        public ActionResult<Project> AddTask(int taskId, Project proj)
         {
-            return proj.AllSubtask();
+            var task = _dbContext.Tasks.FirstOrDefault(t => t.Id == taskId);
+            _dbContext.Tasks.Add(task);
+            _dbContext.SaveChanges();
+            return proj;
         }
-        
+
+        // [HttpGet]
+        // public ActionResult<List<Task>> AllSubtask(Project proj)
+        // {
+        //     return proj.AllSubtask();
+        // }
     }
 }

@@ -13,5 +13,10 @@ namespace TaskTracker.Core
         {
             return proj.Tasks;
         }
+
+        // todo: фильтровать разными способами (< > = between) по разным полям
+        // public static List<Project> DateFilter()
+        // {
+        // }
     }
 }
