@@ -1,22 +1,25 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using TaskTracker.Core.Models;
 
 namespace TaskTracker.Core
 {
     public static class ProjectService
     {
-        public static void RemoveTask(this Project proj, Task t)
+        public static IEnumerable<Project> DateFilter(List<Project> projects,
+            DateTime startAt=default,
+            DateTime endAt=default,
+            int priority = -1)
         {
-            proj.Tasks.Remove(t);
+            IEnumerable<Project> result = new List<Project>();
+            if (startAt != default)
+                result = projects.Where(p => p.StartDate == startAt);
+            if (endAt != default)
+                result = projects.Where(p => p.CompletionDate == endAt);
+            if (priority > -1)
+                result = projects.Where(p => p.Priority == priority);
+            return result;
         }
-        public static List<Task> AllSubtask(this Project proj)
-        {
-            return proj.Tasks;
-        }
-
-        // todo: фильтровать разными способами (< > = between) по разным полям
-        // public static List<Project> DateFilter()
-        // {
-        // }
     }
 }

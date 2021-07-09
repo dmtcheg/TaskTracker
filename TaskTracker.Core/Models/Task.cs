@@ -14,6 +14,6 @@ namespace TaskTracker.Core.Models
         public string Description { get; set; }
         public int Priority { get; set; }
         public TaskStatus Status { get; set; }
-        public Project Project { get; }
+        public Project Project { get; set; }
     }
 }

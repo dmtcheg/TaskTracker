@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TaskTracker.Core.Models;
 using TaskTracker.Infrastructure;
+using TaskTracker.ViewModel;
 
 namespace TaskTracker.Controllers
 {
@@ -16,15 +17,16 @@ namespace TaskTracker.Controllers
         {
             _dbContext = db as TrackerDbContext;
         }
-
-        // [HttpGet]
-        // public ActionResult<List<Task>> ViewAll()
-        // {
-        //     return _dbContext.Tasks
-        //         .AsNoTracking().ToList();
-        // }
         
         [HttpGet]
+        public ActionResult<List<TaskViewModel>> ViewAll()
+        {
+            return _dbContext.Tasks
+                .Select(t => new TaskViewModel(t))
+                .ToList();
+        }
+        
+        [HttpGet("{projId}")]
         public ActionResult<List<Task>> ViewByProject(int projId)
         {
             var proj = _dbContext.Projects.FirstOrDefault(p => p.Id == projId);
@@ -72,6 +74,15 @@ namespace TaskTracker.Controllers
             _dbContext.Tasks.Remove(delTask);
             _dbContext.SaveChanges();
             return NoContent(); 
+        }
+
+        [HttpPut("{projId}")]
+        public ActionResult<Task> AddToProject(int projId, Task task)
+        {
+            task.Project = _dbContext.Projects.FirstOrDefault(p => p.Id == projId);
+            _dbContext.Tasks.Update(task);
+            _dbContext.SaveChanges();
+            return task;
         }
     }
 }

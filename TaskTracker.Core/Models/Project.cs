@@ -17,6 +17,7 @@ namespace TaskTracker.Core.Models
         public DateTime StartDate { get; set; }
         public DateTime CompletionDate { get; set; }
         public int Priority { get; set; }
+        public ProjectStatus Status { get; set; }
         public List<Task> Tasks { get; set; }
     }
 }

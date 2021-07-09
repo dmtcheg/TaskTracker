@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using TaskTracker.Core;
 using TaskTracker.Core.Models;
 using TaskTracker.Infrastructure;
+using TaskTracker.ViewModel;
 
 namespace TaskTracker.Controllers
 {
@@ -30,10 +31,15 @@ namespace TaskTracker.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<Project>> ViewAll()
+        public ActionResult<List<ProjectViewModel>> ViewAll()
         {
-            return _dbContext.Projects
-                .AsNoTracking().ToList();
+            if (_dbContext.Projects.Count() > 0)
+            {
+                return _dbContext.Projects
+                    .Select(p => new ProjectViewModel(p))
+                    .ToList();
+            }
+            return NotFound();
         }
 
         [HttpPost]
@@ -71,7 +77,7 @@ namespace TaskTracker.Controllers
         [HttpDelete("{taskId}")]
         public ActionResult<Project> RemoveTask(int taskId, Project proj)
         {
-            var task = proj.Tasks.FirstOrDefault(t=> t.Id == taskId);
+            var task = proj.Tasks.FirstOrDefault(t => t.Id == taskId);
             if (task is null)
                 return NotFound();
             _dbContext.Tasks.Remove(task);
@@ -88,10 +94,19 @@ namespace TaskTracker.Controllers
             return proj;
         }
 
-        // [HttpGet]
-        // public ActionResult<List<Task>> AllSubtask(Project proj)
+        public void Filter()
+        {
+        }
+
+        // [HttpGet("{id}")]
+        // public ActionResult<List<TaskViewModel>> AllSubtask(int id)
         // {
-        //     return proj.AllSubtask();
+        //     var proj = _dbContext.Projects.FirstOrDefault(p => p.Id == id);
+        //     if (proj is null)
+        //         return NotFound();
+        //     return proj.Tasks
+        //         .Select(t => new TaskViewModel(t))
+        //         .ToList();
         // }
     }
 }
