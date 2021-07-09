@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TaskTracker;
 
-namespace TaskTracker.Migrations
+namespace TaskTracker.Infrastructure.Migrations
 {
     [DbContext(typeof(TrackerDbContext))]
     partial class TrackerDbContextModelSnapshot : ModelSnapshot

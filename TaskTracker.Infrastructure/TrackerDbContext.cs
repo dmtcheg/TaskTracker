@@ -1,14 +1,13 @@
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
-using TaskTracker.Models;
+using TaskTracker.Core.Models;
 
-namespace TaskTracker
+namespace TaskTracker.Infrastructure
 {
     public class TrackerDbContext: DbContext
     {
         public TrackerDbContext(DbContextOptions<TrackerDbContext> options):base(options)
         {
-            //Database.EnsureCreated();
         }
         
         public DbSet<Project> Projects { get; set; }

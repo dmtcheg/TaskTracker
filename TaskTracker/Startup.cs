@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using TaskTracker.Infrastructure;
 
 namespace TaskTracker
 {
@@ -20,8 +21,6 @@ namespace TaskTracker
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            
-            // todo: configuration builder and db.ensurecreated
         }
 
         public IConfiguration Configuration { get; }
@@ -30,8 +29,7 @@ namespace TaskTracker
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddDbContext<TrackerDbContext>(options => 
-                options.UseSqlite(Configuration.GetConnectionString("Tracker")));
+            services.AddDbContext<TrackerDbContext>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "TaskTracker", Version = "v1"});

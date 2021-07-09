@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TaskTracker.Models;
+using TaskTracker.Core;
+using TaskTracker.Core.Models;
+using TaskTracker.Infrastructure;
 
 namespace TaskTracker.Controllers
 {
@@ -15,9 +15,9 @@ namespace TaskTracker.Controllers
     {
         private TrackerDbContext _dbContext;
 
-        public ProjectController(TrackerDbContext context)
+        public ProjectController(DbContext context)
         {
-            _dbContext = context;
+            _dbContext = context as TrackerDbContext;
         }
 
         [HttpGet("{id}")]
@@ -38,7 +38,7 @@ namespace TaskTracker.Controllers
         [HttpPost]
         public IActionResult Create(Project proj)
         {
-            _dbContext.Add(proj);
+            _dbContext.Projects.Add(proj);
             _dbContext.SaveChanges();
             return CreatedAtAction(nameof(Create), new {id = proj.Id}, proj);
         }
@@ -66,5 +66,17 @@ namespace TaskTracker.Controllers
             _dbContext.SaveChanges();
             return NoContent();
         }
+
+        public ActionResult<Project> RemoveTask(Project proj, Task task)
+        {
+            proj.RemoveTask(task);
+            return proj;
+        }
+
+        public ActionResult<List<Task>> AllSubtask(Project proj)
+        {
+            return proj.AllSubtask();
+        }
+        
     }
 }

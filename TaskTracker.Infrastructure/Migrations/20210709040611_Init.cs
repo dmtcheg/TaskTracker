@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace TaskTracker.Migrations
+namespace TaskTracker.Infrastructure.Migrations
 {
     public partial class Init : Migration
     {

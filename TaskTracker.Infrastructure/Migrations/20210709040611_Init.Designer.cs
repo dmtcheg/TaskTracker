@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TaskTracker;
 
-namespace TaskTracker.Migrations
+namespace TaskTracker.Infrastructure.Migrations
 {
     [DbContext(typeof(TrackerDbContext))]
     [Migration("20210709040611_Init")]

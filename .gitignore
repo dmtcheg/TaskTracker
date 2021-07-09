@@ -464,5 +464,6 @@ FodyWeavers.xsd
 .idea/
 *.sln.iml
 
+TaskTracker.Infrastructure/Tracker.db
 ### VisualStudio Patch ###
 # Additional files built by Visual Studio

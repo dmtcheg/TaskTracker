@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace TaskTracker.Models
+namespace TaskTracker.Core.Models
 {
     public enum ProjectStatus
     {

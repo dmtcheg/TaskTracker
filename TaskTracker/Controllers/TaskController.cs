@@ -2,20 +2,19 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TaskTracker.Models;
-using TaskTracker.Services;
+using TaskTracker.Core.Models;
+using TaskTracker.Infrastructure;
 
 namespace TaskTracker.Controllers
 {
-    // все в контроллер, потом вытащить в сервис
     [ApiController]
     [Route("api/controller")]
     public class TaskController : ControllerBase
     {
         private TrackerDbContext _dbContext;
-        public TaskController(TrackerDbContext db)
+        public TaskController(DbContext db)
         {
-            _dbContext = db;
+            _dbContext = db as TrackerDbContext;
         }
 
         [HttpGet]
@@ -50,7 +49,6 @@ namespace TaskTracker.Controllers
             return CreatedAtAction(nameof(Create), new {id = task.Id}, task);
         }
         
-        // TODO: is it support "remove task from a project"?
         [HttpPut("{id}")]
         public IActionResult Edit(int id, Task task)
         {
@@ -67,10 +65,10 @@ namespace TaskTracker.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var t = _dbContext.Tasks.FirstOrDefault(t => t.Id == id);
-            if (t is null)
+            var delTask = _dbContext.Tasks.FirstOrDefault(t => t.Id == id);
+            if (delTask is null)
                 return NotFound();
-            _dbContext.Tasks.Remove(t);
+            _dbContext.Tasks.Remove(delTask);
             _dbContext.SaveChanges();
             return NoContent(); 
         }
