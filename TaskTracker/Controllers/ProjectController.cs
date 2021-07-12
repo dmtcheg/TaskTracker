@@ -89,24 +89,36 @@ namespace TaskTracker.Controllers
         public ActionResult<Project> AddTask(int taskId, Project proj)
         {
             var task = _dbContext.Tasks.FirstOrDefault(t => t.Id == taskId);
+            if (task is null)
+                return NotFound();
             _dbContext.Tasks.Add(task);
             _dbContext.SaveChanges();
             return proj;
         }
 
-        public void Filter()
+        public void Filter(string option, DateTime s, DateTime e,int prior=-1)
         {
+            if (prior == -1)
+                ProjectService.DateFilter(_dbContext.Projects, option, s, e);
+            else
+                ProjectService.PriorityFilter(_dbContext.Projects, option, prior);
         }
 
-        // [HttpGet("{id}")]
-        // public ActionResult<List<TaskViewModel>> AllSubtask(int id)
-        // {
-        //     var proj = _dbContext.Projects.FirstOrDefault(p => p.Id == id);
-        //     if (proj is null)
-        //         return NotFound();
-        //     return proj.Tasks
-        //         .Select(t => new TaskViewModel(t))
-        //         .ToList();
-        // }
+        [HttpGet]
+        public ActionResult<List<Project>> Sort()
+        {
+            return ProjectService.Sort(_dbContext.Projects.ToList());
+        }
+
+        //[HttpGet("{id}")]
+        public ActionResult<List<TaskViewModel>> AllSubtask(int id)
+        {
+            var proj = _dbContext.Projects.FirstOrDefault(p => p.Id == id);
+            if (proj is null || proj.Tasks.Count() == 0)
+                return NotFound();
+            return proj.Tasks
+                .Select(t => new TaskViewModel(t))
+                .ToList();
+        }
     }
 }

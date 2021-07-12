@@ -11,6 +11,7 @@ namespace TaskTracker.ViewModel
         public DateTime StartDate { get; set; }
         public DateTime CompletionDate { get; set; }
         public int Priority { get; set; }
+        public ProjectStatus Status { get; set; }
 
         public ProjectViewModel(Project proj)
         {
@@ -19,6 +20,7 @@ namespace TaskTracker.ViewModel
             StartDate = proj.StartDate;
             CompletionDate = proj.CompletionDate;
             Priority = proj.Priority;
+            Status = proj.Status;
         }
     }
 }
